@@ -185,6 +185,32 @@ body{
     }
 }
 
+
+
+@media screen and (max-width: 400px){
+  .weather-app{
+    min-height: 40em;
+    font-size: 12px;    
+    /* */
+  }
+  .weather-app .container {
+    width: 100%; 
+    max-width: 320px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+
+  .weather-app .temp {
+    font-size: 4em;
+  }
+
+  .weather-app .name {
+    font-size: 1.2em;
+  }
+  
+}
+
 @media screen and (max-width: 320px){
   .weather-app{
     min-height: 40em;
