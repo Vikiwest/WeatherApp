@@ -10,14 +10,11 @@ function showWelcomeMessage() {
     message = "Good evening! ";
   }
 
-  
   document.getElementById("welcomeMessage").textContent = message;
 }
 
-
 // Call the function on page load
 window.onload = showWelcomeMessage;
-
 
 // Get all necessary elements from the DOM
 const app = document.querySelector(".weather-app");
@@ -42,12 +39,11 @@ let apiKey = "11d7c2026be44641b85195426240211";
 // Add click event to each city in the panel
 cities.forEach((city) => {
   city.addEventListener("click", (e) => {
-
     // Change from default city to clicked one
     cityInput = e.target.innerHTML.trim();
     console.log("Updated city:", cityInput);
 
-      //Updated city name Output
+    //Updated city name Output
     nameOutput.innerHTML = cityInput;
 
     //Fetch the new weather data and fade out the app for smooth transition
@@ -66,10 +62,10 @@ form.addEventListener("submit", (e) => {
     cityInput = search.value;
     console.log("Updated city (search):", cityInput);
 
-      // Update the city name output to show the searched city
-      nameOutput.innerHTML = cityInput;
+    // Update the city name output to show the searched city
+    nameOutput.innerHTML = cityInput;
 
-      //Fetch new weather data
+    //Fetch new weather data
     fetchWeatherData();
 
     search.value = ""; // Clear input field
@@ -95,7 +91,7 @@ function dayOfTheWeek(day, month, year) {
 function fetchWeatherData() {
   app.style.opacity = "0";
   fetch(
-    `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${cityInput}&aqi=no`
+    `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${cityInput}&aqi=no`
   )
     .then((response) => response.json())
     .then((data) => {
@@ -106,42 +102,31 @@ function fetchWeatherData() {
       }
       console.log(data); // Console the data
 
-    
+      // Add temperature and weather condition to the page
+      let isCelsius = true;
+      let temperatureCelsius = null; // Set to the temperature value in Celsius
 
-   
+      // Store the temperature in Celsius for later use
+      temperatureCelsius = data.current.temp_c;
 
+      // Display initial temperature in Celsius
+      temp.innerHTML = temperatureCelsius + "&#176;C";
+      conditionOutput.innerHTML = data.current.condition.text;
 
-    // Add temperature and weather condition to the page
-let isCelsius = true;
-let temperatureCelsius =null // Set to the temperature value in Celsius
+      // Add click event to toggle temperature on click
+      temp.addEventListener("click", toggleTemperature);
 
-
-    // Store the temperature in Celsius for later use
-    temperatureCelsius = data.current.temp_c;
-
-    // Display initial temperature in Celsius
-    temp.innerHTML = temperatureCelsius + "&#176;C";
-    conditionOutput.innerHTML = data.current.condition.text;
-
-    // Add click event to toggle temperature on click
-    temp.addEventListener("click", toggleTemperature);
-    
-function toggleTemperature() {
-    if (isCelsius) {
-        // Convert Celsius to Fahrenheit
-        let temperatureFahrenheit = (temperatureCelsius * 9/5) + 32;
-        temp.innerHTML = `${temperatureFahrenheit.toFixed(1)}&#176;F`;
-    } else {
-        // Display temperature in Celsius
-        temp.innerHTML = `${temperatureCelsius}&#176;C`;
-    }
-    isCelsius = !isCelsius;
-}
-
-
-
-
-
+      function toggleTemperature() {
+        if (isCelsius) {
+          // Convert Celsius to Fahrenheit
+          let temperatureFahrenheit = (temperatureCelsius * 9) / 5 + 32;
+          temp.innerHTML = `${temperatureFahrenheit.toFixed(1)}&#176;F`;
+        } else {
+          // Display temperature in Celsius
+          temp.innerHTML = `${temperatureCelsius}&#176;C`;
+        }
+        isCelsius = !isCelsius;
+      }
 
       // Get the date and time from the city
       const date = data.location.localtime;
@@ -203,6 +188,3 @@ function toggleTemperature() {
 fetchWeatherData();
 // // Fade in the page
 // app.style.opacity = "1";
-
-
-
